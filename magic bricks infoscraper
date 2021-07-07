@@ -1,0 +1,46 @@
+import webbrowser
+from googlesearch import search
+import bs4
+import requests
+import re
+from bs4 import BeautifulSoup
+from xlwt import Workbook
+u = input("Enter : ")
+ur="https://www.magicbricks.com/"+u
+search_query = ur
+for item in search(search_query,
+                       tld='co.in',
+                       lang='en',
+                       num=15,
+                       stop=15,
+                       pause=2.0):
+    print(item)
+
+    url = item
+    data = requests.get(url)
+    soup = bs4.BeautifulSoup(data.text,'html.parser')
+    def bhk():
+        for links in soup.find_all('span',{"class":"m-srp-card__title__bhk"}):
+            if(links=='span',{"class":"m-srp-card__title__bhk"}):
+                lst = links.string
+                print(lst.strip())
+    bhk()
+    def price():
+        for keemat in soup.find_all('div',{"class":"m-srp-card__price"}):
+            if(keemat=='div',{"class":"m-srp-card__price"}):
+                rup = keemat.next_element
+                print("\t\t\t\t",re.sub(r"[\n\t\s]*", "",rup.strip()))
+    price()
+    def add():
+        for ad in soup.find_all('span', {"class": "m-srp-card__title__bhk"}):
+            if (ad == 'span', {"class": "m-srp-card__title__bhk"}):
+                lst1 = ad.next_sibling
+                print("\t\t\t\t\t",re.sub(r"[\n\t\s]*", "",lst1.strip()),end="\n")
+    add()
+    def title():
+        for tit in soup.find_all('div',{"class":"m-srp-card__summary__title"} and {"class":"m-srp-card__summary__info"}):
+            if(tit=='div',{"class":"m-srp-card__summary__title"} and {"class":"m-srp-card__summary__info"}):
+                tg = tit.next_element
+                print("\t\t\t\t\t\t",tg.strip())
+    title()
+
